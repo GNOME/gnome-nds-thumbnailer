@@ -9,8 +9,8 @@ gnome_nds_thumbnailer_LDADD = $(GDK_PIXBUF_LIBS)
 
 
 schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_in_files = gnome-nds-thumbnailer.schema.in
-schemas_DATA = $(schemas_in_files:.schema.in=.schema)
+schemas_in_files = gnome-nds-thumbnailer.schemas.in
+schemas_DATA = gnome-nds-thumbnailer.schemas
 
 # Rule to make the service file with bindir expanded
 $(schemas_DATA): $(schemas_in_files) Makefile
@@ -27,6 +27,6 @@ else
 install-data-local:
 endif
 
-EXTRA_DIST = gnome-nds-thumbnailer.schema.in AUTHORS COPYING README
+EXTRA_DIST = gnome-nds-thumbnailer.schemas.in AUTHORS COPYING README
 
-CLEANFILES = gnome-nds-thumbnailer.schema
+CLEANFILES = gnome-nds-thumbnailer.schemas

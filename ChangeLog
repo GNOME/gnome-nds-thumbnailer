@@ -1,3 +1,13 @@
+============ Version 1.0.2
+
+2007-10-06  Bastien Nocera  <hadess@hadess.net>
+
+	* Makefile.am: upd
+	* gnome-nds-thumbnailer.schema.in: remove
+	* gnome-nds-thumbnailer.schemas.in: add
+	Schemas need to be named ".schemas", and not
+	".schema", otherwise GConf craps itself
+
 ============ Version 1.0.1
 
 2007-10-06  Bastien Nocera  <hadess@hadess.net>
