@@ -1,0 +1,24 @@
+AC_PREREQ(2.59)
+
+AC_INIT([gnome-nds-thumbnailer], [0.0.0], [hadess@hadess.net])
+AM_INIT_AUTOMAKE(1.9)
+
+AC_PROG_CC
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+AC_PROG_SED
+
+PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0, [], [AC_MSG_FAILURE([You need gdk-pixbuf library >= 2.0])])
+AC_SUBST(GDK_PIXBUF_CFLAGS)
+AC_SUBST(GDK_PIXBUF_LIBS)
+
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+
+if test x$GCONFTOOL = "xno"; then
+  AC_MSG_FAILURE([gconftool-2 is needed])
+fi
+
+AM_GCONF_SOURCE_2
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

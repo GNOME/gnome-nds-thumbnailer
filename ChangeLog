@@ -1,0 +1,13 @@
+2007-10-06  Bastien Nocera  <hadess@hadess.net>
+
+	* COPYING:
+	* Makefile.am:
+	* README:
+	* MAINTAINERS:
+	* autogen.sh:
+	* configure.ac:
+	* gnome-nds-thumbnailer.c: (put_pixel), (load_icon), (main):
+	* gnome-nds-thumbnailer.schema.in:
+	Import into SVN, includes patch from Laurent Bigonville
+	<l.bigonville@edpnet.be> for autotool-ification
+
