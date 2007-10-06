@@ -1,5 +1,11 @@
 2007-10-06  Bastien Nocera  <hadess@hadess.net>
 
+	* AUTHORS:
+	* autogen.sh:
+	* configure.ac: Fix build, up version to 1.0
+
+2007-10-06  Bastien Nocera  <hadess@hadess.net>
+
 	* COPYING:
 	* Makefile.am:
 	* README:
