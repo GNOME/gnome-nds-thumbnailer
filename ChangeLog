@@ -1,3 +1,14 @@
+============ Version 1.0.1
+
+2007-10-06  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS:
+	* configure.ac: 1.0.1
+
+	* Makefile.am: Patch from Laurent Bigonville
+	<l.bigonville@edpnet.be> to fix typo, fixes
+	schema generation
+
 ============ Version 1.0
 
 2007-10-06  Bastien Nocera  <hadess@hadess.net>

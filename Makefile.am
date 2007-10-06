@@ -10,7 +10,7 @@ gnome_nds_thumbnailer_LDADD = $(GDK_PIXBUF_LIBS)
 
 schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_in_files = gnome-nds-thumbnailer.schema.in
-schemas_DATA = $(schema_in_files:.schemas.in=.schemas)
+schemas_DATA = $(schemas_in_files:.schema.in=.schema)
 
 # Rule to make the service file with bindir expanded
 $(schemas_DATA): $(schemas_in_files) Makefile
