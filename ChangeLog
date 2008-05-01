@@ -1,5 +1,10 @@
 2008-05-01  Bastien Nocera  <hadess@hadess.net>
 
+	* gnome-nds-thumbnailer.c (main): And port to GIO
+	proper
+
+2008-05-01  Bastien Nocera  <hadess@hadess.net>
+
 	* Makefile.am:
 	* configure.ac:
 	* gnome-nds-thumbnailer.c (main): Use GVFS' FUSE
