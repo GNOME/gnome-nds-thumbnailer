@@ -1,3 +1,10 @@
+2008-05-01  Bastien Nocera  <hadess@hadess.net>
+
+	* Makefile.am:
+	* configure.ac:
+	* gnome-nds-thumbnailer.c (main): Use GVFS' FUSE
+	support to support remote NDS files
+
 ============ Version 1.0.2
 
 2007-10-06  Bastien Nocera  <hadess@hadess.net>

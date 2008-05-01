@@ -13,6 +13,8 @@ PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0, [], [AC_MSG_FAILURE([You need gdk-
 AC_SUBST(GDK_PIXBUF_CFLAGS)
 AC_SUBST(GDK_PIXBUF_LIBS)
 
+PKG_CHECK_MODULES(GIO, gio-2.0, [], [AC_MSG_FAILURE([You need glib 2.16 or newer installed])])
+
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 
 if test x$GCONFTOOL = "xno"; then

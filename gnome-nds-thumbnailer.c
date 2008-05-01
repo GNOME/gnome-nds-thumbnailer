@@ -22,6 +22,7 @@
 
 #include <string.h>
 #include <glib.h>
+#include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 /* From specs at http://www.bottledlight.com/ds/index.php/FileFormats/NDSFormat
@@ -123,7 +124,8 @@ int main (int argc, char **argv)
 	GdkPixbuf *pixbuf, *scaled;
 	GError *error = NULL;
 	GOptionContext *context;
-	char *input, *output;
+	const char *output;
+	char *input;
 
 	/* Options parsing */
 	context = g_option_context_new ("Thumbnail Nintendo DS ROMs");
@@ -149,12 +151,26 @@ int main (int argc, char **argv)
 		g_print ("Expects an input and an output file\n");
 		return 1;
 	}
-	input = filenames[0];
+
+	{
+		GFile *file;
+
+		file = g_file_new_for_commandline_arg (filenames[0]);
+		input = g_file_get_path (file);
+		g_object_unref (file);
+	}
+
+	if (input == NULL) {
+		g_print ("Only local files are supported\n");
+		return 1;
+	}
+
 	output = filenames[1];
 
 	map = g_mapped_file_new (input, FALSE, &error);
 	if (!map) {
 		g_warning ("Couldn't map %s: %s", input, error->message);
+		g_free (input);
 		g_error_free (error);
 		return 1;
 	}
@@ -169,6 +185,7 @@ int main (int argc, char **argv)
 	/* Check the version is version 1 */
 	if (base[offset] != 0x1 || base[offset + 1] != 0x0) {
 		g_warning ("Unsupported icon version, probably not an NDS file");
+		g_free (input);
 		return 1;
 	}
 
@@ -187,10 +204,12 @@ int main (int argc, char **argv)
 	g_object_unref (pixbuf);
 	if (gdk_pixbuf_save (scaled, output, "png", &error, NULL) == FALSE) {
 		g_warning ("Couldn't save the thumbnail '%s' for file '%s': %s", output, input, error->message);
+		g_free (input);
 		g_error_free (error);
 		return 1;
 	}
 
+	g_free (input);
 	g_object_unref (scaled);
 
 	return 0;
