@@ -1,3 +1,10 @@
+1.2.0
+-----
+
+* Port to GIO
+
+* Change scaling method to bilinear, looks nicer in nautilus
+
 1.0.2
 -----
 

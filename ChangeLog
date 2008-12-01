@@ -1,3 +1,10 @@
+============ Version 1.2.0
+
+2008-12-01  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.ac: 1.2.0
+
 2008-12-01  Bastien Nocera  <hadess@hadess.net>
 
 	* gnome-nds-thumbnailer.c (main): Change scaling method
