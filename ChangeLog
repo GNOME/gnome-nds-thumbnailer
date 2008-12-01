@@ -1,3 +1,9 @@
+2008-12-01  Bastien Nocera  <hadess@hadess.net>
+
+	* gnome-nds-thumbnailer.c (main): Change scaling method
+	to bilinear interpolation, spotted by David Cavallini
+	<david.cavallini@gmail.com>
+
 2008-05-01  Bastien Nocera  <hadess@hadess.net>
 
 	* gnome-nds-thumbnailer.c (main): And port to GIO

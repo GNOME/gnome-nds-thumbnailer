@@ -207,7 +207,7 @@ int main (int argc, char **argv)
 	g_free (palette_data);
 	g_free (tile_data);
 
-	scaled = gdk_pixbuf_scale_simple (pixbuf, output_size, output_size, 0);
+	scaled = gdk_pixbuf_scale_simple (pixbuf, output_size, output_size, GDK_INTERP_BILINEAR);
 	g_object_unref (pixbuf);
 	if (gdk_pixbuf_save (scaled, output, "png", &error, NULL) == FALSE) {
 		g_warning ("Couldn't save the thumbnail '%s' for file '%s': %s", output, filenames[0], error->message);
