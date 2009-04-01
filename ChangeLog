@@ -1,5 +1,10 @@
 2009-04-01  Bastien Nocera  <hadess@hadess.net>
 
+	* gnome-nds-thumbnailer.c (main): Also support version 3
+	banners as used in some newer ROMs, spotted by TJ
+
+2009-04-01  Bastien Nocera  <hadess@hadess.net>
+
 	* README: Remove install instructions, it's a simple
 	./configure && make && make install
 
