@@ -3,13 +3,6 @@ Thumbnailer for Nintendo DS ROM files
 Nintendo DS files contain an embedded 16 colours, 32x32 icon, which
 helps identify the ROM files.
 
-Compiling:
-gcc -g -Wall -o gnome-nds-thumbnailer gnome-nds-thumbnailer.c `pkg-config --libs --cflags gdk-pixbuf-2.0`
-
-Installing:
-gconftool-2 --set --type bool /desktop/gnome/thumbnailers/application@x-nintendo-ds-rom/enable true
-gconftool-2 --set --type string /desktop/gnome/thumbnailers/application@x-nintendo-ds-rom/command "/path/to/gnome-nds-thumbnailer %i %o"
-
 License and copyright:
 See source file
 
