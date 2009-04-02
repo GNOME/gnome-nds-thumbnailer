@@ -1,3 +1,10 @@
+============ Version 1.2.1
+
+2009-04-02  Bastien Nocera  <hadess@hadess.net>
+
+	* NEWS: upd
+	* configure.ac: 1.2.1
+
 2009-04-01  Bastien Nocera  <hadess@hadess.net>
 
 	* gnome-nds-thumbnailer.c (main): Also support version 3
