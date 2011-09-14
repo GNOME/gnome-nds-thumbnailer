@@ -3,6 +3,9 @@ AC_PREREQ(2.59)
 AC_INIT([gnome-nds-thumbnailer], [3.0.0], [hadess@hadess.net])
 AM_INIT_AUTOMAKE(1.9 dist-bzip2 no-dist-gzip check-news)
 
+# Enable silent build when available (Automake 1.11)
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
 AC_PROG_CC
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL

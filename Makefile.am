@@ -8,7 +8,7 @@ gnome_nds_thumbnailer_LDADD = $(THUMBNAILER_LIBS)
 thumbnailerdir = $(datadir)/thumbnailers/
 thumbnailer_DATA = gnome-nds-thumbnailer.thumbnailer
 gnome-nds-thumbnailer.thumbnailer: gnome-nds-thumbnailer.thumbnailer.in Makefile
-	@$(SED) -e "s|\@bindir\@|$(bindir)|" $< > $@
+	$(AM_V_GEN) $(SED) -e "s|\@bindir\@|$(bindir)|" $< > $@
 
 EXTRA_DIST = gnome-nds-thumbnailer.thumbnailer.in AUTHORS COPYING README
 
