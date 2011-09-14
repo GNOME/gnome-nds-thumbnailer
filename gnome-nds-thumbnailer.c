@@ -192,9 +192,10 @@ int main (int argc, char **argv)
 	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
 	g_object_unref (stream);
 
-	/* Check the version is version 1 or 3 */
+	/* Check the version is version 1, 3 or 19 (NDSi) */
 	if ((banner_data[0] != 0x1 || banner_data[1] != 0x0) &&
-	    (banner_data[0] != 0x3 || banner_data[1] != 0x0)) {
+	    (banner_data[0] != 0x3 || banner_data[1] != 0x0) &&
+	    (banner_data[0] != 0x3 || banner_data[1] != 0x1)) {
 		g_free (banner_data);
 		g_warning ("Unsupported icon version, probably not an NDS file");
 		return 1;
