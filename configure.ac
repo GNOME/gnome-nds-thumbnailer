@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT([gnome-nds-thumbnailer], [1.2.1], [hadess@hadess.net])
+AC_INIT([gnome-nds-thumbnailer], [3.0.0], [hadess@hadess.net])
 AM_INIT_AUTOMAKE(1.9 dist-bzip2 no-dist-gzip check-news)
 
 AC_PROG_CC
