@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=@bindir@/gnome-nds-thumbnailer
+Exec=@bindir@/gnome-nds-thumbnailer -s %s %u %o
+MimeType=application/x-nintendo-ds-rom;

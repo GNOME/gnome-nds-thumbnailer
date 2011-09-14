@@ -15,13 +15,5 @@ AC_SUBST(GDK_PIXBUF_LIBS)
 
 PKG_CHECK_MODULES(GIO, gio-2.0, [], [AC_MSG_FAILURE([You need glib 2.16 or newer installed])])
 
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-
-if test x$GCONFTOOL = "xno"; then
-  AC_MSG_FAILURE([gconftool-2 is needed])
-fi
-
-AM_GCONF_SOURCE_2
-
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
