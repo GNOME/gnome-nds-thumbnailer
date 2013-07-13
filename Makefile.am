@@ -2,7 +2,7 @@
 bin_PROGRAMS = gnome-nds-thumbnailer
 
 gnome_nds_thumbnailer_SOURCES = gnome-nds-thumbnailer.c
-gnome_nds_thumbnailer_CPPFLAGS = $(THUMBNAILER_CFLAGS)
+gnome_nds_thumbnailer_CPPFLAGS = $(THUMBNAILER_CFLAGS) $(WARN_CFLAGS)
 gnome_nds_thumbnailer_LDADD = $(THUMBNAILER_LIBS)
 
 thumbnailerdir = $(datadir)/thumbnailers/
