@@ -68,7 +68,7 @@ put_pixel (guchar *pixels, int rowstride, int x, int y, struct palette_i item)
 	p[3] = item.a;
 }
 
-GdkPixbuf *
+static GdkPixbuf *
 load_icon (gchar *tile_data, guint16 *palette_data)
 {
 	struct palette_i palette[16];
@@ -121,9 +121,7 @@ static const GOptionEntry entries[] = {
 
 int main (int argc, char **argv)
 {
-	GMappedFile *map;
 	guint32 offset;
-	gchar *base;
 	gchar *tile_data;
 	guint16 *palette_data;
 
