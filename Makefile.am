@@ -1,8 +1,12 @@
 
 bin_PROGRAMS = gnome-nds-thumbnailer
 
-gnome_nds_thumbnailer_SOURCES = gnome-nds-thumbnailer.c
-gnome_nds_thumbnailer_CPPFLAGS = $(THUMBNAILER_CFLAGS) $(WARN_CFLAGS)
+gnome_nds_thumbnailer_SOURCES = gnome-nds-thumbnailer.c gnome-thumbnailer-skeleton.h gnome-thumbnailer-skeleton.c
+gnome_nds_thumbnailer_CPPFLAGS =		\
+	$(THUMBNAILER_CFLAGS)			\
+	-DTHUMBNAILER_RETURNS_PIXBUF		\
+	-DTHUMBNAILER_USAGE="\"Thumbnail Nintendo DS ROMs\"" \
+	$(WARN_CFLAGS)
 gnome_nds_thumbnailer_LDADD = $(THUMBNAILER_LIBS)
 
 thumbnailerdir = $(datadir)/thumbnailers/

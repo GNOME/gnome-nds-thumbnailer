@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 2007 Bastien Nocera <hadess@hadess.net>
+/*
+ * Copyright (C) 2007, 2013 Bastien Nocera <hadess@hadess.net>
  *
  * Authors: Bastien Nocera <hadess@hadess.net>
  * Thomas Köckerbauer <tkoecker@gmx.net>
@@ -25,18 +25,19 @@
 #include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include "gnome-thumbnailer-skeleton.h"
+
 /* From specs at http://www.bottledlight.com/ds/index.php/FileFormats/NDSFormat
  * and code at http://www.kde-apps.org/content/show.php?content=39247 */
 
 #define BOUND_ERROR(x) {											\
-	if (error != NULL) {											\
-		g_warning ("Couldn't access file data at 0x%x, probably not a NDS ROM: %s", x, error->message);	\
-		g_error_free (error);										\
-	} else													\
-		g_warning ("Couldn't access file data at 0x%x, probably not a NDS ROM", x);			\
+	if (error != NULL)											\
+		return NULL;											\
+	else													\
+		g_set_error (error, 0, 0, "Couldn't access file data at 0x%x, probably not a NDS ROM", x);	\
 	if (stream != NULL)											\
 		g_object_unref (stream);									\
-	return 1;												\
+	return NULL;												\
 }
 
 #define LOGO_OFFSET_OFFSET 0x068
@@ -108,83 +109,41 @@ load_icon (gchar *tile_data, guint16 *palette_data)
 	return pixbuf;
 }
 
-static int output_size = 64;
-static gboolean g_fatal_warnings = FALSE;
-static char **filenames = NULL;
-
-static const GOptionEntry entries[] = {
-	{ "size", 's', 0, G_OPTION_ARG_INT, &output_size, "Size of the thumbnail in pixels", NULL },
-	{"g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &g_fatal_warnings, "Make all warnings fatal", NULL},
- 	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &filenames, NULL, "[FILE...]" },
-	{ NULL }
-};
-
-int main (int argc, char **argv)
+GdkPixbuf *
+file_to_pixbuf (const char  *path,
+		GError     **error)
 {
+	GFile *input;
+	GFileInputStream *stream;
+	GdkPixbuf *pixbuf;
+
 	guint32 offset;
 	gchar *tile_data;
 	guint16 *palette_data;
 
-	GdkPixbuf *pixbuf, *scaled;
-	GError *error = NULL;
-	GOptionContext *context;
-	GFile *input;
-	const char *output;
-	GFileInputStream *stream;
-
 	guint32 logo_offset[4];
 	char *banner_data;
 
-	/* Options parsing */
-	context = g_option_context_new ("Thumbnail Nintendo DS ROMs");
-	g_option_context_add_main_entries (context, entries, NULL);
-	g_type_init ();
-
-	if (g_option_context_parse (context, &argc, &argv, &error) == FALSE) {
-		g_warning ("Couldn't parse command-line options: %s", error->message);
-		g_error_free (error);
-		return 1;
-	}
-
-	/* Set fatal warnings if required */
-	if (g_fatal_warnings) {
-		GLogLevelFlags fatal_mask;
-
-		fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
-		fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
-		g_log_set_always_fatal (fatal_mask);
-	}
-
-	if (filenames == NULL || g_strv_length (filenames) != 2) {
-		g_print ("Expects an input and an output file\n");
-		return 1;
-	}
-
-	input = g_file_new_for_commandline_arg (filenames[0]);
-	output = filenames[1];
-
 	/* Open the file for reading */
-	stream = g_file_read (input, NULL, &error);
+	input = g_file_new_for_path (path);
+	stream = g_file_read (input, NULL, error);
 	g_object_unref (input);
 
-	if (stream == NULL) {
-		g_warning ("Couldn't open '%s': %s", filenames[0], error->message);
-		g_error_free (error);
-		return 1;
-	}
+	if (stream == NULL)
+		return NULL;
 
 	/* Get the address of the logo */
-	if (g_input_stream_skip (G_INPUT_STREAM (stream), LOGO_OFFSET_OFFSET, NULL, &error) == FALSE)
+	if (g_input_stream_skip (G_INPUT_STREAM (stream), LOGO_OFFSET_OFFSET, NULL, error) == FALSE)
 		BOUND_ERROR(LOGO_OFFSET_OFFSET);
-	if (g_input_stream_read (G_INPUT_STREAM (stream), &logo_offset, sizeof(guint32), NULL, &error) == FALSE)
+	if (g_input_stream_read (G_INPUT_STREAM (stream), &logo_offset, sizeof(guint32), NULL, error) == FALSE)
 		BOUND_ERROR(LOGO_OFFSET_OFFSET);
 	offset = GUINT32_FROM_LE(*logo_offset) - g_seekable_tell (G_SEEKABLE (stream));
 
 	/* Get the icon data */
-	if (g_input_stream_skip (G_INPUT_STREAM (stream), offset, NULL, &error) != offset)
+	if (g_input_stream_skip (G_INPUT_STREAM (stream), offset, NULL, error) != offset)
 		BOUND_ERROR(offset);
 	banner_data = g_malloc0(BANNER_LENGTH);
-	if (g_input_stream_read (G_INPUT_STREAM (stream), banner_data, BANNER_LENGTH, NULL, &error) != BANNER_LENGTH)
+	if (g_input_stream_read (G_INPUT_STREAM (stream), banner_data, BANNER_LENGTH, NULL, error) != BANNER_LENGTH)
 		BOUND_ERROR(LOGO_OFFSET_OFFSET);
 
 	g_input_stream_close (G_INPUT_STREAM (stream), NULL, NULL);
@@ -195,8 +154,8 @@ int main (int argc, char **argv)
 	    (banner_data[0] != 0x3 || banner_data[1] != 0x0) &&
 	    (banner_data[0] != 0x3 || banner_data[1] != 0x1)) {
 		g_free (banner_data);
-		g_warning ("Unsupported icon version, probably not an NDS file");
-		return 1;
+		g_set_error (error, 0, 0, "Unsupported icon version, probably not an NDS file");
+		return NULL;
 	}
 
 	/* Get the tile and palette data for the logo */
@@ -207,16 +166,5 @@ int main (int argc, char **argv)
 	g_free (palette_data);
 	g_free (tile_data);
 
-	scaled = gdk_pixbuf_scale_simple (pixbuf, output_size, output_size, GDK_INTERP_BILINEAR);
-	g_object_unref (pixbuf);
-	if (gdk_pixbuf_save (scaled, output, "png", &error, NULL) == FALSE) {
-		g_warning ("Couldn't save the thumbnail '%s' for file '%s': %s", output, filenames[0], error->message);
-		g_error_free (error);
-		return 1;
-	}
-
-	g_object_unref (scaled);
-
-	return 0;
+	return pixbuf;
 }
-
